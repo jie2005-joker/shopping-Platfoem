@@ -8,15 +8,14 @@
         <li class="home">
           <RouterLink to="/">首页</RouterLink>
         </li>
-        <li> <RouterLink to="/">居家</RouterLink> </li>
-        <li> <RouterLink to="/">美食</RouterLink> </li>
-        <li> <RouterLink to="/">服饰</RouterLink> </li>
+        <li v-for="item in headerList" :key="item.id"> <RouterLink to="/">{{item.name}}</RouterLink> </li>
       </ul>
       <div class="search">
+        <!-- <el-icon class="icon-search"><Search /></el-icon> -->
         <el-input
           v-model="input"
           class="responsive-input"
-          placeholder="Type something"
+          placeholder="请输入搜索内容"
           :prefix-icon="Search"
         />
       </div>
@@ -27,8 +26,22 @@
 </template>
 
 <script setup>
+import { Search } from '@element-plus/icons-vue'
 
-import {ref} from 'vue'
+import {getGoodsList} from '@/apis/index'
+import {ref, onMounted} from 'vue'
+
+const headerList = ref([])
+const getHeaderList = () => {
+  getGoodsList().then(res => {
+    // console.log(res)
+    headerList.value = res.result
+  })
+}
+onMounted(() => {
+  getHeaderList()
+})
+
 const input = ref('')
 </script>
 
