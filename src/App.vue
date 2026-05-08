@@ -3,10 +3,14 @@
 </script>
 
 <template>
+  <p class="content">这是一个p标签</p>
   <RouterView />
  </template>
 
-<style scoped>
+<style scoped lang="scss">
+.content {
+  color: $sucColor;
+}
 header {
   line-height: 1.5;
   max-height: 100vh;
