@@ -3,7 +3,6 @@
 </script>
 
 <template>
-  <p class="content">这是一个p标签</p>
   <RouterView />
  </template>
 
