@@ -1,4 +1,5 @@
 import './assets/main.css'
+import 'element-plus/theme-chalk/src/index.scss'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
