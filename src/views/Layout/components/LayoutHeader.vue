@@ -13,7 +13,6 @@
         <li> <RouterLink to="/">服饰</RouterLink> </li>
       </ul>
       <div class="search">
-        <i class="iconfont icon-search"></i>
         <el-input
           v-model="input"
           class="responsive-input"
@@ -28,7 +27,7 @@
 </template>
 
 <script setup>
-import { Search } from '@element-plus/icons-vue'
+
 import {ref} from 'vue'
 const input = ref('')
 </script>
