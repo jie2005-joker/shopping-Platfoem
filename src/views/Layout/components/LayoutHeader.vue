@@ -8,7 +8,7 @@
         <li class="home">
           <RouterLink to="/">首页</RouterLink>
         </li>
-        <li v-for="item in headerList" :key="item.id"> <RouterLink to="/">{{item.name}}</RouterLink> </li>
+        <li v-for="item in categoryStore.categoryList" :key="item.id"> <RouterLink to="/">{{item.name}}</RouterLink> </li>
       </ul>
       <div class="search">
         <!-- <el-icon class="icon-search"><Search /></el-icon> -->
@@ -28,19 +28,11 @@
 <script setup>
 import { Search } from '@element-plus/icons-vue'
 
-import {getGoodsList} from '@/apis/index'
+
 import {ref, onMounted} from 'vue'
 
-const headerList = ref([])
-const getHeaderList = () => {
-  getGoodsList().then(res => {
-    // console.log(res)
-    headerList.value = res.result
-  })
-}
-onMounted(() => {
-  getHeaderList()
-})
+import {useCategoryStore} from '@/stores/category'
+const categoryStore = useCategoryStore()
 
 const input = ref('')
 </script>

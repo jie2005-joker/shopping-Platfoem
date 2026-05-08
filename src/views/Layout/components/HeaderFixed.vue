@@ -1,5 +1,5 @@
 <template>
-  <div class="app-header-sticky" :class="{'show': y > 70}">
+  <div class="app-header-sticky" :class="{'show': y > 90}">
     <div class="container">
       <RouterLink class="logo" to="/" />
       <!-- 导航区域 -->
@@ -7,32 +7,8 @@
         <li class="home">
           <RouterLink to="/">首页</RouterLink>
         </li>
-        <li>
-          <RouterLink to="/">居家</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">美食</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">服饰</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">母婴</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">个护</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">严选</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">数码</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">运动</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">杂项</RouterLink>
+        <li v-for="item in categoryStore.categoryList" :key="item.id">
+          <RouterLink to="/">{{item.name}}</RouterLink>
         </li>
       </ul>
 
@@ -46,7 +22,9 @@
 
 <script setup>
 import { useScroll } from '@vueuse/core'
+import {useCategoryStore} from '@/stores/category'
 
+const categoryStore = useCategoryStore()
 const { y } = useScroll(window)
 </script>
 
