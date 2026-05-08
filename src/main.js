@@ -1,4 +1,4 @@
-import './assets/main.css'
+import '@/styles/common.scss'
 import 'element-plus/theme-chalk/src/index.scss'
 
 import { createApp } from 'vue'
