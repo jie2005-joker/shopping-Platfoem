@@ -1,5 +1,12 @@
 <script setup>
+import { getGoodsList } from '@/apis'
+import { onMounted } from 'vue'
 
+onMounted(() => {
+  getGoodsList().then(res => {
+    console.log(res)
+  })
+})
 </script>
 
 <template>
