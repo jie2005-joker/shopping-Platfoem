@@ -35,7 +35,7 @@ const { y } = useScroll(window)
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 999;
+  z-index: 10000;
   background-color: #fff;
   border-bottom: 1px solid #e4e4e4;
   // 此处为关键样式!!!

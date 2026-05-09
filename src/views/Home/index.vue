@@ -5,6 +5,7 @@
     <homeNew />
     <homeProduct />
     <homeHot />
+   
   </div>
 </template>
 

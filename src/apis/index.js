@@ -12,3 +12,10 @@ export function getBannerList() {
     url: '/home/banner'
   })
 }
+
+// 获取新鲜好物模块列表
+export function getFreshGoodsList() {
+  return server({
+    url: '/home/new'
+  })
+}
