@@ -2,13 +2,13 @@
   <homePanel title="新鲜好物" subTitle="新鲜出炉 品质靠谱">
     <ul>
         <li class="item" v-for="item in freshGoodsList" :key="item.id">
-          <a href="/">
+          <router-link href="/">
             <img :src="item.picture" alt="" :title="item.name">
             <div class="info">
               <p class="title">{{item.name}}</p>
               <p class="price"><span>¥</span>{{item.price}}</p>
             </div>
-          </a>
+          </router-link>
         </li>
       </ul>
   </homePanel>
