@@ -50,7 +50,7 @@ const hide = () => {
     currentCategory.value = null
   }, 200)
 }
-const clearTimer = () => clearTimeout(timer.value)
+const clearTimer = () => clearTimeout(timer)
 const handleShowList = (item) => {
   // console.log(item)
   clearTimer()
@@ -71,6 +71,7 @@ const handleHiddenList = () => {
   height: 495px;
   background: rgba(0, 0, 0, 0.8);
   position: relative;
+  z-index: 9999;
   li{
     height: 55px;
     color: #fff;

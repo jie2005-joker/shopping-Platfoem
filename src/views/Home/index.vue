@@ -20,5 +20,6 @@ import homeCategory from './components/homeCategory.vue'
 .home{
   width: 1240px;
   margin: 0 auto;
+  position: relative;
 }
 </style>
