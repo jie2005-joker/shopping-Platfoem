@@ -135,6 +135,7 @@ const handleHiddenList = () => {
           .title{
             overflow: hidden;
             display: -webkit-box;
+            line-clamp: 2;
             -webkit-line-clamp: 2; /* 控制显示行数，改数字即可 */
             -webkit-box-orient: vertical;
             text-overflow: ellipsis;
