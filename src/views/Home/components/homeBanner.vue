@@ -2,7 +2,7 @@
     <div class="block text-center banner">
       <el-carousel height="495px" motion-blur>
         <el-carousel-item v-for="item in imgURL" :key="item">
-          <img :src="item" alt="">
+          <img v-img-lazy="item" alt="">
         </el-carousel-item>
       </el-carousel>
     </div>

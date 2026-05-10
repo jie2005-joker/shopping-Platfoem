@@ -26,3 +26,10 @@ export function getHotGoodsList() {
     url: '/home/hot'
   })
 }
+
+// 热门品牌模块
+export function getBrandList() {
+  return server({
+    url: '/home/brand'
+  })
+}

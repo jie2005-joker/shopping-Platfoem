@@ -3,9 +3,10 @@
     <homeCategory />
     <homeBanner />
     <homeNew />
-    <homeProduct />
     <homeHot />
-   
+    <homeBrand />
+   <homeProduct />
+
   </div>
 </template>
 
@@ -15,6 +16,9 @@ import homeHot from './components/homeHot.vue'
 import homeNew from './components/homeNew.vue'
 import homeBanner from './components/homeBanner.vue'
 import homeCategory from './components/homeCategory.vue'
+import homeBrand from './components/homeBrand.vue'
+
+
 </script>
 
 <style scoped>
