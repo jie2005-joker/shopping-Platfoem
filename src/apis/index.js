@@ -33,3 +33,10 @@ export function getBrandList() {
     url: '/home/brand'
   })
 }
+
+// 获取商品列表
+export function getProductList() {
+  return server({
+    url: '/home/goods'
+  })
+}

@@ -24,7 +24,7 @@ defineProps({
 
 <style scoped lang="scss">
 .container{
-  
+  margin-bottom: 20px;
  padding-top: 10px;
   .header{
     margin: 20px 0;
@@ -41,7 +41,7 @@ defineProps({
   }
   .body{
     width: 100%;
-    height: 404px;
+    // height: 404px;
   }
 }
 </style>
