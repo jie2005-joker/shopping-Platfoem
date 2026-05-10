@@ -7,9 +7,13 @@ export function getGoodsList() {
 }
 
 // 获取轮播图的图片
-export function getBannerList() {
+export function getBannerList(params = {}) {
+  const {distributionSite = "1"} = params
   return server({
-    url: '/home/banner'
+    url: '/home/banner',
+    params: {
+      distributionSite
+    }
   })
 }
 

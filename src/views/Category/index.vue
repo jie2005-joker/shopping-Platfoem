@@ -2,6 +2,7 @@
 import { getTopCategoryAPI } from '@/apis/Category'
 import { onMounted, ref, watch } from 'vue'
 import {useRoute} from 'vue-router'
+import { getBannerList } from '@/apis/index'
 const route = useRoute()
 const categoryList = ref([])
 const getCategory = () => {
@@ -10,12 +11,22 @@ const getCategory = () => {
     return
   }
   getTopCategoryAPI(id).then(res => {
-    categoryList.value = res.result
-    console.log(categoryList.value)
+  categoryList.value = res.result
+  console.log(categoryList.value)
+})
+}
+
+const imgURL = ref([])
+const getBanner = () => {
+  getBannerList().then(res => {
+    // console.log(res)
+    imgURL.value = res.result.map(item => item.imgUrl)
   })
 }
+
 onMounted(() => {
   getCategory()
+  getBanner()
 })
 
 watch(() => route.params.id, (newVal,oldVal) => {
@@ -32,9 +43,17 @@ watch(() => route.params.id, (newVal,oldVal) => {
       <div class="bread-container">
         <el-breadcrumb separator=">">
           <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-          <el-breadcrumb-item>居家</el-breadcrumb-item>
+          <el-breadcrumb-item>{{ categoryList.name }}</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
+      <!-- 轮播图模块 -->
+      <div class="block text-center banner">
+      <el-carousel height="495px" motion-blur>
+        <el-carousel-item v-for="item in imgURL" :key="item">
+          <img v-img-lazy="item" alt="">
+        </el-carousel-item>
+      </el-carousel>
+    </div>
     </div>
   </div>
 </template>
@@ -117,6 +136,15 @@ watch(() => route.params.id, (newVal,oldVal) => {
   .bread-container {
     padding: 25px 0;
   }
+  .banner{
+  width: 1240px;
+  height: 495px;
+  margin: 0 auto;
+  img{
+    width: 100%;
+    height: 495px;
+  }
+}
 }
 </style>
 
