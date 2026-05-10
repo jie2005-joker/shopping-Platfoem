@@ -11,10 +11,6 @@
 
 <script setup>
 defineProps({
-  goodsList: {
-    type: Array,
-    default: () => []
-  },
   title: {
     type: String,
     default: ''

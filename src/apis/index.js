@@ -19,3 +19,10 @@ export function getFreshGoodsList() {
     url: '/home/new'
   })
 }
+
+// 获取人气推荐模块列表
+export function getHotGoodsList() {
+  return server({
+    url: '/home/hot'
+  })
+}
