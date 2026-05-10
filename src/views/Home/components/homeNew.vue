@@ -3,7 +3,7 @@
     <ul>
         <li class="item" v-for="item in freshGoodsList" :key="item.id">
           <router-link href="/">
-            <img :src="item.picture" alt="" :title="item.name">
+            <img v-img-lazy="item.picture" alt="" :title="item.name">
             <div class="info">
               <p class="title">{{item.name}}</p>
               <p class="price"><span>¥</span>{{item.price}}</p>

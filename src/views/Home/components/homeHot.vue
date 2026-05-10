@@ -4,7 +4,7 @@
       <ul>
         <li class="item" v-for="item in hotGoodsList" :key="item.id">
           <router-link to="/">
-            <img :src="item.picture" alt="" :alt="item.alt">
+            <img v-img-lazy="item.picture" alt="" :alt="item.alt">
             <div class="info">
               <p class="title">{{item.title}}</p>
               <p class="desc">{{item.alt}}</p>
