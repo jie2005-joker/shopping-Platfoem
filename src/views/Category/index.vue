@@ -1,14 +1,13 @@
 <script setup>
 import { getTopCategoryAPI } from '@/apis/Category'
 import { onMounted, ref, watch } from 'vue'
-import {useRoute} from 'vue-router'
+import {useRoute,onBeforeRouteUpdate} from 'vue-router'
 import { getBannerList } from '@/apis/index'
 import GoodsItem from '@/views/Home/components/goodsItem.vue'
 const route = useRoute()
 const categoryList = ref([])
-const getCategory = () => {
-  const id = route.params.id
-  if (!id) {
+const getCategory = (id = route.params.id) => {
+ if (!id) {
     return
   }
   getTopCategoryAPI(id).then(res => {
@@ -30,9 +29,17 @@ onMounted(() => {
   getBanner()
 })
 
-watch(() => route.params.id, (newVal,oldVal) => {
-  if (newVal !== oldVal) {
-    getCategory()
+// 监听路由变化,watch(() => route.params.id, fetchData),适用于动态参数场景
+// watch(() => route.params.id, (newVal,oldVal) => {
+//   if (newVal !== oldVal) {
+//     getCategory()
+//   }
+// })
+
+// 使用 onBeforeRouteUpdate路由更新时触发,适用于同组件内路由切换
+onBeforeRouteUpdate((to) => {
+  if (to.params.id !== route.params.id) {
+    getCategory(to.params.id)
   }
 })
 </script>
@@ -74,7 +81,7 @@ watch(() => route.params.id, (newVal,oldVal) => {
       <div class="body">
         <GoodsItem v-for="good in item.goods" :goods="good" :key="good.id" />
       </div> 
-    </div>
+      </div>
     </div>
   </div>
 </template>
