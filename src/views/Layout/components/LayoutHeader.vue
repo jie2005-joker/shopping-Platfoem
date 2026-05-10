@@ -9,7 +9,7 @@
           <RouterLink to="/">首页</RouterLink>
         </li>
         <li v-for="item in categoryStore.categoryList" :key="item.id">
-           <RouterLink :to="'/category/' + item.id">{{item.name}}</RouterLink> 
+           <RouterLink active-class="active" :to="'/category/' + item.id">{{item.name}}</RouterLink> 
         </li>
       </ul>
       <div class="search">
@@ -71,7 +71,7 @@ const input = ref('')
       margin-right: 40px;
       width: 38px;
       text-align: center;
-  
+      
       a {
         font-size: 16px;
         line-height: 32px;
@@ -79,6 +79,10 @@ const input = ref('')
         display: inline-block;
   
         &:hover {
+          color: $xtxColor;
+          border-bottom: 2px solid $xtxColor;
+        }
+        &.active {
           color: $xtxColor;
           border-bottom: 2px solid $xtxColor;
         }

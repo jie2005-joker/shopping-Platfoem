@@ -1,6 +1,6 @@
 <template>
   <RouterLink to="/" class="goods-item">
-    <img :src="goods.picture" alt="" />
+    <img v-img-lazy="goods.picture" alt="" />
     <p class="name ellipsis">{{ goods.name }}</p>
     <p class="desc ellipsis">{{ goods.desc }}</p>
     <p class="price">&yen;{{ goods.price }}</p>
@@ -44,11 +44,19 @@ defineProps({
 
       .name {
         font-size: 16px;
+        width: 180px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .desc {
         color: #999;
         height: 29px;
+        width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .price {

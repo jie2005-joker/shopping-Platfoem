@@ -3,6 +3,7 @@ import { getTopCategoryAPI } from '@/apis/Category'
 import { onMounted, ref, watch } from 'vue'
 import {useRoute} from 'vue-router'
 import { getBannerList } from '@/apis/index'
+import GoodsItem from '@/views/Home/components/goodsItem.vue'
 const route = useRoute()
 const categoryList = ref([])
 const getCategory = () => {
@@ -12,7 +13,7 @@ const getCategory = () => {
   }
   getTopCategoryAPI(id).then(res => {
   categoryList.value = res.result
-  console.log(categoryList.value)
+  // console.log(categoryList.value)
 })
 }
 
@@ -48,11 +49,31 @@ watch(() => route.params.id, (newVal,oldVal) => {
       </div>
       <!-- 轮播图模块 -->
       <div class="block text-center banner">
-      <el-carousel height="495px" motion-blur>
-        <el-carousel-item v-for="item in imgURL" :key="item">
-          <img v-img-lazy="item" alt="">
-        </el-carousel-item>
-      </el-carousel>
+        <el-carousel height="495px" motion-blur>
+          <el-carousel-item v-for="item in imgURL" :key="item">
+            <img v-img-lazy="item" alt="">
+          </el-carousel-item>
+        </el-carousel>
+      </div>
+      <!-- 子分类模块 -->
+       <div class="sub-list">
+        <h3>全部分类</h3>
+          <ul>
+            <li v-for="i in categoryList.children" :key="i.id">
+              <RouterLink to="/">
+                <img :src="i.picture" />
+                <p>{{ i.name }}</p>
+              </RouterLink>
+            </li>
+          </ul>
+       </div>
+      <div class="ref-goods" v-for="item in categoryList.children" :key="item.id">
+        <div class="head">
+          <h3>- {{ item.name }}-</h3>
+        </div>
+      <div class="body">
+        <GoodsItem v-for="good in item.goods" :goods="good" :key="good.id" />
+      </div> 
     </div>
     </div>
   </div>

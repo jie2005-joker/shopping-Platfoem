@@ -8,7 +8,7 @@
           <RouterLink to="/">首页</RouterLink>
         </li>
         <li v-for="item in categoryStore.categoryList" :key="item.id">
-          <RouterLink :to="'/category/' + item.id">{{item.name}}</RouterLink>
+          <RouterLink active-class="active" :to="'/category/' + item.id">{{item.name}}</RouterLink>
         </li>
       </ul>
 
@@ -78,6 +78,7 @@ const { y } = useScroll(window)
       &:hover {
         color: $xtxColor;
       }
+      
     }
   }
 }
@@ -101,6 +102,10 @@ const { y } = useScroll(window)
       display: inline-block;
 
       &:hover {
+        color: $xtxColor;
+        border-bottom: 2px solid $xtxColor;
+      }
+      &.active {
         color: $xtxColor;
         border-bottom: 2px solid $xtxColor;
       }
