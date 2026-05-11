@@ -21,6 +21,7 @@ export function useGoods() {
   })
   return {
     goodsList,
-    getGoods
+    getGoods,
+    data
   }
 }

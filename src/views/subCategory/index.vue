@@ -9,9 +9,10 @@
     </div>
     <div class="sub-container">
       <el-tabs
+        v-model="data.sortField"
         type="card"
         class="demo-tabs"
-        @tab-click="handleClick"
+        @tab-change="handleTabChange"
       >
         <el-tab-pane label="最新商品" name="publishTime">最新商品</el-tab-pane>
         <el-tab-pane label="最高人气" name="orderNum">最高人气</el-tab-pane>
@@ -31,9 +32,12 @@ import {useGoods} from '@/views/subCategory/components/useGoods.js'
 import goodsItem from '@/views/Home/components/goodsItem.vue'
 
 const {subCategoryList, getSubCategory} = useSubCategory()
-const {goodsList, getGoods} = useGoods()
+const {goodsList, getGoods, data} = useGoods()
 
-const handleClick = () => {
+const handleTabChange = () => {
+  // console.log("切换了tab", data.value.sortField)
+  data.value.page = 1
+  getGoods()
 }
 </script>
 
