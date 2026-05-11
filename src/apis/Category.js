@@ -9,3 +9,13 @@ export const getTopCategoryAPI = (id) => {
     }
   })
 }
+
+// 获取二级分类商品列表
+export const getSubCategoryAPI = (id) => {
+  return request({
+    url:'/category/sub/filter',
+    params:{
+      id
+    }
+  })
+}

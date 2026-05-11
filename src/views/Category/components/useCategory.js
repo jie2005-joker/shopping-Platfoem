@@ -1,6 +1,6 @@
-import { ref,onMounted,onBeforeRouteUpdate, watch } from 'vue'
+import { ref,onMounted, watch } from 'vue'
 import { getTopCategoryAPI } from '@/apis/Category'
-import { useRoute } from 'vue-router'
+import { useRoute,onBeforeRouteUpdate } from 'vue-router'
 
 export function useCategory() {
   const route = useRoute()
