@@ -76,7 +76,15 @@ const rules = ref({
     { min: 6, max: 14, message: '密码长度必须在 6 到 14 个字符之间', trigger: 'blur' }
   ],
   agree: [
-    { required: true, message: '请同意隐私条款和服务条款', trigger: 'change' }
+     {
+      validator: (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('请同意隐私条款和服务条款'))
+        } else {
+          callback()
+        }
+      }
+     }
   ]
 })
 const formData = ref({
@@ -88,10 +96,6 @@ const formData = ref({
 const handleSubmit = async (formEl) => {
   console.log(formEl.value)
    if (!formEl) return
-   if (!formData.value.agree){
-    ElMessage.error('请同意隐私条款和服务条款')
-    return
-   }
    await formEl.validate( async (valid, fields) => {
     if (valid) {
       const res = await login(formData.value)
