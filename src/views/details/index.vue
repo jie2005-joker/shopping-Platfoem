@@ -19,7 +19,8 @@
         <div class="goods-info">
           <div class="media">
             <!-- 图片预览区 -->
-
+            <imageView />
+            
             <!-- 统计数量 -->
             <ul class="goods-sales">
               <li>
@@ -117,6 +118,7 @@ import { getGoodsDetailAPI } from '@/apis/Category'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import DetailHot from './components/DetailHot.vue'
+import imageView from '@/components/imageView/index.vue'
 
 const route = useRoute()
 const goods = ref({})
