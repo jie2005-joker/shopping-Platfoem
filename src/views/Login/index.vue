@@ -100,8 +100,6 @@ const handleSubmit = async (formEl) => {
     if (valid) {
       const res = await login(formData.value)
       console.log(res)
-    } else {
-      console.log('error submit!', fields)
     }
   })
 }

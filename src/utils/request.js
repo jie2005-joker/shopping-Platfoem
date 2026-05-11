@@ -21,6 +21,7 @@ server.interceptors.response.use(
     return response.data
   },
   error => {
+    ElMessage.error(error.response.data.message || '请求失败')
     return Promise.reject(error)
   }
 )
