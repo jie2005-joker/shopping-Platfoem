@@ -18,9 +18,9 @@
         <el-tab-pane label="最高人气" name="orderNum">最高人气</el-tab-pane>
         <el-tab-pane label="评论最多" name="evaluateNum">评论最多</el-tab-pane>
       </el-tabs>
-      <div class="body">
-      <goodsItem v-for="item in goodsList" :key="item.id" :goods="item"/>
-    </div>
+      <div v-infinite-scroll="loadMore" :infinite-scroll-disabled="disabled" class="body">
+        <goodsItem v-for="item in goodsList" :key="item.id" :goods="item"/>
+      </div>
     </div>
     
   </div>
@@ -31,14 +31,16 @@ import {useSubCategory} from '@/views/subCategory/components/index.js'
 import {useGoods} from '@/views/subCategory/components/useGoods.js'
 import goodsItem from '@/views/Home/components/goodsItem.vue'
 
-const {subCategoryList, getSubCategory} = useSubCategory()
-const {goodsList, getGoods, data} = useGoods()
+const {subCategoryList} = useSubCategory()
+const {goodsList, getGoods, data, disabled, loadMore} = useGoods()
+
 
 const handleTabChange = () => {
   // console.log("切换了tab", data.value.sortField)
   data.value.page = 1
   getGoods()
 }
+
 </script>
 
 <style scoped lang="scss">
