@@ -1,47 +1,18 @@
 <script setup>
-import { getTopCategoryAPI } from '@/apis/Category'
-import { onMounted, ref, watch } from 'vue'
-import {useRoute,onBeforeRouteUpdate} from 'vue-router'
-import { getBannerList } from '@/apis/index'
+// 轮播图组件
+import { useBanner } from './components/useBanner'
+
+// 分类列表组件
+import { useCategory } from './components/useCategory'
+
+// 分类列表数据
+const {categoryList} = useCategory()
+
+// 轮播图数据
+const {imgURL} = useBanner()
+
+// 商品卡片组件
 import GoodsItem from '@/views/Home/components/goodsItem.vue'
-const route = useRoute()
-const categoryList = ref([])
-const getCategory = (id = route.params.id) => {
- if (!id) {
-    return
-  }
-  getTopCategoryAPI(id).then(res => {
-  categoryList.value = res.result
-  // console.log(categoryList.value)
-})
-}
-
-const imgURL = ref([])
-const getBanner = () => {
-  getBannerList().then(res => {
-    // console.log(res)
-    imgURL.value = res.result.map(item => item.imgUrl)
-  })
-}
-
-onMounted(() => {
-  getCategory()
-  getBanner()
-})
-
-// 监听路由变化,watch(() => route.params.id, fetchData),适用于动态参数场景
-// watch(() => route.params.id, (newVal,oldVal) => {
-//   if (newVal !== oldVal) {
-//     getCategory()
-//   }
-// })
-
-// 使用 onBeforeRouteUpdate路由更新时触发,适用于同组件内路由切换
-onBeforeRouteUpdate((to) => {
-  if (to.params.id !== route.params.id) {
-    getCategory(to.params.id)
-  }
-})
 </script>
 
 <template>
