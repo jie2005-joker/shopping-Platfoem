@@ -13,19 +13,27 @@
         class="demo-tabs"
         @tab-click="handleClick"
       >
-        <el-tab-pane label="最新商品" name="first">最新商品</el-tab-pane>
-        <el-tab-pane label="最高人气" name="second">最高人气</el-tab-pane>
-        <el-tab-pane label="评论最多" name="third">评论最多</el-tab-pane>
+        <el-tab-pane label="最新商品" name="publishTime">最新商品</el-tab-pane>
+        <el-tab-pane label="最高人气" name="orderNum">最高人气</el-tab-pane>
+        <el-tab-pane label="评论最多" name="evaluateNum">评论最多</el-tab-pane>
       </el-tabs>
+      <div class="body">
+      <goodsItem v-for="item in goodsList" :key="item.id" :goods="item"/>
     </div>
+    </div>
+    
   </div>
 </template>
 
 <script setup>
 import {useSubCategory} from '@/views/subCategory/components/index.js'
-const {subCategoryList, getSubCategory} = useSubCategory()
-const handleClick = () => {
+import {useGoods} from '@/views/subCategory/components/useGoods.js'
+import goodsItem from '@/views/Home/components/goodsItem.vue'
 
+const {subCategoryList, getSubCategory} = useSubCategory()
+const {goodsList, getGoods} = useGoods()
+
+const handleClick = () => {
 }
 </script>
 
