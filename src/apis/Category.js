@@ -37,3 +37,13 @@ export const getSubCategoryGoodsAPI = (data) => {
     data
   })
 }
+
+// 获取商品详情
+export const getGoodsDetailAPI = (id) => {
+  return request({
+    url:'/goods',
+    params:{
+      id
+    }
+  })
+}

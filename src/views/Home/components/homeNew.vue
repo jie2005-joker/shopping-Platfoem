@@ -2,7 +2,7 @@
   <homePanel title="新鲜好物" subTitle="新鲜出炉 品质靠谱">
     <ul>
         <li class="item" v-for="item in freshGoodsList" :key="item.id">
-          <router-link href="/">
+          <router-link :to="`/details/${item.id}`">
             <img v-img-lazy="item.picture" alt="" :title="item.name">
             <div class="info">
               <p class="title">{{item.name}}</p>

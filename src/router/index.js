@@ -19,7 +19,11 @@ const router = createRouter({
       {
         path: 'category/sub/:id',
         component: () => import('@/views/subCategory/index.vue')
-      }
+      },
+      {
+        path: 'details/:id',
+        component: () => import('@/views/details/index.vue')
+      },
     ]
   },
   {
