@@ -18,9 +18,16 @@
         <el-tab-pane label="最高人气" name="orderNum">最高人气</el-tab-pane>
         <el-tab-pane label="评论最多" name="evaluateNum">评论最多</el-tab-pane>
       </el-tabs>
-      <div v-infinite-scroll="loadMore" :infinite-scroll-disabled="disabled" class="body">
+      <!-- <div v-infinite-scroll="loadMore" :infinite-scroll-disabled="disabled" class="body">
         <goodsItem v-for="item in goodsList" :key="item.id" :goods="item"/>
-      </div>
+      </div> -->
+
+      <!-- 需要给 el-scrollbar 一个固定高度，否则滚动条不会出现 -->
+      <el-scrollbar height="800px" @end-reached="loadMore">
+        <div class="body">
+          <goodsItem v-for="item in goodsList" :key="item.id" :goods="item"/>
+        </div>
+      </el-scrollbar>
     </div>
     
   </div>
@@ -30,6 +37,7 @@
 import {useSubCategory} from '@/views/subCategory/components/index.js'
 import {useGoods} from '@/views/subCategory/components/useGoods.js'
 import goodsItem from '@/views/Home/components/goodsItem.vue'
+import { ref } from 'vue'
 
 const {subCategoryList} = useSubCategory()
 const {goodsList, getGoods, data, disabled, loadMore} = useGoods()
@@ -41,6 +49,26 @@ const handleTabChange = () => {
   getGoods()
 }
 
+ const scrollbarRef = ref(null)
+
+  const handleScroll = ({ scrollTop }) => {
+    const scrollbar = scrollbarRef.value
+    if (!scrollbar) return
+
+    // 通过 wrap$ 获取实际滚动容器
+    const wrap = scrollbar.wrap$
+    if (!wrap) return
+
+    const scrollHeight = wrap.scrollHeight
+    const clientHeight = wrap.clientHeight
+
+    console.log(scrollTop, scrollHeight, clientHeight)
+
+    if (disabled.value) return
+    if (scrollTop + clientHeight >= scrollHeight - 10) {
+      loadMore()
+    }
+  }
 </script>
 
 <style scoped lang="scss">
