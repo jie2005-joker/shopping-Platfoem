@@ -19,7 +19,7 @@
         <div class="goods-info">
           <div class="media">
             <!-- 图片预览区 -->
-            <imageView />
+            <imageView :imageList="imgList" />
             
             <!-- 统计数量 -->
             <ul class="goods-sales">
@@ -70,6 +70,7 @@
               </dl>
             </div>
             <!-- sku组件 -->
+            <XtxSku :goods="goods" @change="handleChange"/>
 
             <!-- 数据组件 -->
 
@@ -119,16 +120,23 @@ import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import DetailHot from './components/DetailHot.vue'
 import imageView from '@/components/imageView/index.vue'
+import XtxSku from '@/components/XtxSku/index.vue'
 
 const route = useRoute()
 const goods = ref({})
+const imgList = ref([])
 onMounted(() => {
   getGoodsDetailAPI(route.params.id).then(res => {
     // console.log(res)
     goods.value = res.result
+    // 图片列表赋值
+    imgList.value = res.result.mainPictures || []
   })
 })
 
+const handleChange = (sku) => {
+  console.log(sku)
+}
 </script>
 
 <style scoped lang='scss'>

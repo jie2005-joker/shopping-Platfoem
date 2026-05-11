@@ -20,7 +20,7 @@ const hotGoods = ref([])
 onMounted(() => {
   fetchHotGoodsAPI({ id: route.params.id, type: 2 }).then(res => {
     hotGoods.value = res.result
-    console.log(hotGoods.value)
+    // console.log(hotGoods.value)
   })
 })
 </script>

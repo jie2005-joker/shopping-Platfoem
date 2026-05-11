@@ -1,14 +1,23 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { useMouseInElement } from '@vueuse/core'
+
+const props = defineProps({
+  imageList: {
+    type: Array,
+    default: () => []
+  }
+})
+
+const imageList = computed(() => props.imageList)
 // 图片列表
-const imageList = [
-  "https://yanxuan-item.nosdn.127.net/d917c92e663c5ed0bb577c7ded73e4ec.png",
-  "https://yanxuan-item.nosdn.127.net/e801b9572f0b0c02a52952b01adab967.jpg",
-  "https://yanxuan-item.nosdn.127.net/b52c447ad472d51adbdde1a83f550ac2.jpg",
-  "https://yanxuan-item.nosdn.127.net/f93243224dc37674dfca5874fe089c60.jpg",
-  "https://yanxuan-item.nosdn.127.net/f881cfe7de9a576aaeea6ee0d1d24823.jpg"
-]
+// const imageList = [
+//   "https://yanxuan-item.nosdn.127.net/d917c92e663c5ed0bb577c7ded73e4ec.png",
+//   "https://yanxuan-item.nosdn.127.net/e801b9572f0b0c02a52952b01adab967.jpg",
+//   "https://yanxuan-item.nosdn.127.net/b52c447ad472d51adbdde1a83f550ac2.jpg",
+//   "https://yanxuan-item.nosdn.127.net/f93243224dc37674dfca5874fe089c60.jpg",
+//   "https://yanxuan-item.nosdn.127.net/f881cfe7de9a576aaeea6ee0d1d24823.jpg"
+// ]
 
 const activeIndex = ref(0)
 
@@ -25,9 +34,12 @@ const { elementX, elementY, isOutside } = useMouseInElement(target)
 const left = ref(0)
 const top = ref(0)
 
-watch(([elementX, elementY]), ([elementX, elementY]) => {
+const positionX = ref(0)
+const positionY = ref(0)
+
+watch(([elementX, elementY, isOutside]), ([elementX, elementY, isOutside]) => {
   // console.log(elementX, elementY)
-  if(isOutside.value) return
+  if(isOutside) return
   else{
       if(elementX > 100 && elementX < 300){
         left.value = elementX - 100
@@ -41,6 +53,9 @@ watch(([elementX, elementY]), ([elementX, elementY]) => {
     
       if(elementY < 100)  top.value = 0
       if(elementY > 300)  top.value = 200
+
+      positionX.value = -left.value * 2
+      positionY.value = -top.value * 2
       }
 })
 </script>
@@ -52,7 +67,7 @@ watch(([elementX, elementY]), ([elementX, elementY]) => {
     <div class="middle" ref="target">
       <img :src="imageList[activeIndex]" alt="" />
       <!-- 蒙层小滑块 -->
-      <div class="layer" :style="{ left: `${left}px`, top: `${top}px` }" ></div>
+      <div class="layer" v-show="!isOutside" :style="{ left: `${left}px`, top: `${top}px` }" ></div>
     </div>
     <!-- 小图列表 -->
     <ul class="small">
@@ -63,11 +78,11 @@ watch(([elementX, elementY]), ([elementX, elementY]) => {
     <!-- 放大镜大图 -->
     <div class="large" :style="[
       {
-        backgroundImage: `url(${imageList[0]})`,
-        backgroundPositionX: `0px`,
-        backgroundPositionY: `0px`,
+        backgroundImage: `url(${imageList[activeIndex]})`,
+        backgroundPositionX: `${positionX}px`,
+        backgroundPositionY: `${positionY}px`,
       },
-    ]" v-show="false"></div>
+    ]" v-show="!isOutside"></div>
   </div>
 </template>
 
