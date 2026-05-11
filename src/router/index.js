@@ -27,6 +27,7 @@ const router = createRouter({
     component: () => import('@/views/Login/index.vue')
   }
   ],
+  scrollBehavior: () => ({ top: 0 , behavior: 'smooth' }),
 })
 
 export default router
