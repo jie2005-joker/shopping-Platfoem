@@ -1,6 +1,6 @@
 // 购物车状态管理
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref,computed } from 'vue'
 
 export const useCartStore = defineStore('cart', () => {
   const cartList = ref([])
@@ -20,9 +20,27 @@ export const useCartStore = defineStore('cart', () => {
     // 保存到本地存储
     // localStorage.setItem('cartList', JSON.stringify(cartList.value))
   }
+
+  // 删除购物车商品
+  const delGoods = (skuId) => {
+    cartList.value = cartList.value.filter(item => item.skuId !== skuId)
+  }
+
+  // 计算商品总数量
+  const totalCount = computed(() => {
+    return cartList.value.reduce((pre, cur) => pre + cur.count, 0)
+  })
+
+  // 计算商品总金额
+  const totalPrice = computed(() => {
+    return cartList.value.reduce((pre, cur) => pre + cur.price * cur.count, 0)
+  })
   return {
     cartList,
-    addCart
+    addCart,
+    delGoods,
+    totalCount,
+    totalPrice
   }
 },{
   persist: true

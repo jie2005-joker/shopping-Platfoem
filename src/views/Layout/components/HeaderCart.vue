@@ -26,14 +26,14 @@ const cartStore = useCartStore()
               <p class="count">x{{ i.count }}</p>
             </div>
           </RouterLink>
-          <i class="iconfont icon-close-new" @click="store.delCart(i.skuId)"></i>
+          <i class="iconfont icon-close-new" @click="cartStore.delGoods(i.skuId)"></i>
         </div>
        
       </div>
       <div class="foot">
         <div class="total">
-          <p>共 {{cartStore.cartList.reduce((pre, cur) => pre + cur.count, 0)}} 件商品</p>
-          <p>&yen; {{ cartStore.cartList.reduce((pre, cur) => pre + cur.price * cur.count, 0) }} </p>
+          <p>共 {{cartStore.totalCount}} 件商品</p>
+          <p>&yen; {{ cartStore.totalPrice.toFixed(2) }} </p>
         </div>
         <el-button size="large" type="primary" >去购物车结算</el-button>
       </div>
