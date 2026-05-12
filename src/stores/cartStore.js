@@ -44,13 +44,42 @@ export const useCartStore = defineStore('cart', () => {
   const selectedPrice = computed(() => {
     return cartList.value.filter(item => item.selected).reduce((pre, cur) => pre + cur.price * cur.count, 0)
   })
+
+  // 全选/取消全选
+  const selectAll = ref(false)
+  // 检测是否全选了商品
+  // const isAllSelected = computed(() => {
+  //   return cartList.value.every(item => item.selected)
+  // })
+  // 全选/取消全选商品
+  const selectAllGoods = () => {
+    selectAll.value = !selectAll.value
+    cartList.value.forEach(item => {
+      item.selected = selectAll.value
+    })
+  }
+
+  // 单选商品
+  const isAllSelected = ref(false)
+  const singleSelect = (i) => {
+    // i.selected = selected
+    i.selected = !i.selected
+    // 检测是否全选了商品
+    isAllSelected.value = cartList.value.every(item => item.selected)
+  }
+
   return {
     cartList,
     addCart,
     delGoods,
     totalCount,
     totalPrice,
-    selectedCount
+    selectedCount,
+    selectedPrice,
+    selectAll,
+    selectAllGoods,
+    isAllSelected,
+    singleSelect
   }
 },{
   persist: true

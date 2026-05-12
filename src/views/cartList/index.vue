@@ -13,6 +13,11 @@ const delGood = (skuId) => {
     // 取消删除
   })
 }
+// 单选商品
+const singleChange = (i,selected) => {
+  // console.log(selected)
+  cartStore.singleSelect(i)
+}
 </script>
 
 <template>
@@ -23,7 +28,7 @@ const delGood = (skuId) => {
           <thead>
             <tr>
               <th width="120">
-                <el-checkbox/>
+                <el-checkbox v-model="cartStore.isAllSelected" @change="cartStore.selectAllGoods" />
               </th>
               <th width="400">商品信息</th>
               <th width="220">单价</th>
@@ -36,7 +41,7 @@ const delGood = (skuId) => {
           <tbody>
             <tr v-for="i in cartStore.cartList" :key="i.skuId">
               <td>
-                <el-checkbox />
+                <el-checkbox :model-value="i.selected" @change="(selected) => singleChange(i,selected)"/>
               </td>
               <td>
                 <div class="goods">
@@ -80,7 +85,7 @@ const delGood = (skuId) => {
       <div class="action">
         <div class="batch">
           共 {{cartStore.totalCount}} 件商品，已选择 {{ cartStore.selectedCount }} 件，商品合计：
-          <span class="red">¥ {{cartStore.totalPrice.toFixed(2) }} </span>
+          <span class="red">¥ {{cartStore.selectedPrice.toFixed(2) }} </span>
         </div>
         <div class="total">
           <el-button size="large" type="primary">下单结算</el-button>
