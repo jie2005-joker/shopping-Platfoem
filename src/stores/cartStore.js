@@ -47,13 +47,15 @@ export const useCartStore = defineStore('cart', () => {
 
   // 全选/取消全选
   const selectAll = ref(false)
-  // 检测是否全选了商品
-  // const isAllSelected = computed(() => {
-  //   return cartList.value.every(item => item.selected)
-  // })
   // 全选/取消全选商品
   const selectAllGoods = () => {
     selectAll.value = !selectAll.value
+    if(selectAll.value){
+      isAllSelected.value = true
+    }else{
+      isAllSelected.value = false
+    }
+    // 将购物车中所有商品的selected属性设置为和全选按钮一样的状态
     cartList.value.forEach(item => {
       item.selected = selectAll.value
     })
@@ -66,6 +68,11 @@ export const useCartStore = defineStore('cart', () => {
     i.selected = !i.selected
     // 检测是否全选了商品
     isAllSelected.value = cartList.value.every(item => item.selected)
+    if(isAllSelected.value){
+      selectAll.value = true
+    }else{
+      selectAll.value = false
+    }
   }
 
   return {

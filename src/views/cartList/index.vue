@@ -18,6 +18,10 @@ const singleChange = (i,selected) => {
   // console.log(selected)
   cartStore.singleSelect(i)
 }
+// 全选/取消全选商品
+const completeSelect = () => {
+  cartStore.selectAllGoods()
+}
 </script>
 
 <template>
@@ -28,7 +32,7 @@ const singleChange = (i,selected) => {
           <thead>
             <tr>
               <th width="120">
-                <el-checkbox v-model="cartStore.isAllSelected" @change="cartStore.selectAllGoods" />
+                <el-checkbox :model-value="cartStore.selectAll" @change="completeSelect" />
               </th>
               <th width="400">商品信息</th>
               <th width="220">单价</th>
