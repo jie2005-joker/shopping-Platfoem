@@ -62,11 +62,17 @@
 </template>
 
 <script setup>
-import { login } from '@/apis/login'
 import { ref } from 'vue'
-import { ElMessage,ElMessageBox } from 'element-plus'
+import { ElMessage } from 'element-plus'
+import { useUserStore } from '@/stores/user'
+const {getUserInfo} = useUserStore()
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
+// 表单实例
 const formRef = ref(null)
+
+// 定义验证规则
 const rules = ref({
   account: [
     { required: true, message: '请输入账户', trigger: 'blur' }
@@ -77,6 +83,7 @@ const rules = ref({
   ],
   agree: [
      {
+      // 自定义校验规则
       validator: (rule, value, callback) => {
         if (!value) {
           callback(new Error('请同意隐私条款和服务条款'))
@@ -87,19 +94,26 @@ const rules = ref({
      }
   ]
 })
+
+// 表单数据
 const formData = ref({
   account: '',
   password: '',
   agree: false
 })
 
+// 登录提交
 const handleSubmit = async (formEl) => {
-  console.log(formEl.value)
+  // console.log(formEl.value)
    if (!formEl) return
-   await formEl.validate( async (valid, fields) => {
+   await formEl.validate( async (valid) => {
     if (valid) {
-      const res = await login(formData.value)
-      console.log(res)
+      await getUserInfo({
+        account: formData.value.account,
+        password: formData.value.password
+      })
+      ElMessage.success('登录成功')
+      router.replace('/')
     }
   })
 }

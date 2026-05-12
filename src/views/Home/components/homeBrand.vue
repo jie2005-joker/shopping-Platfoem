@@ -4,9 +4,13 @@
       <div class="arrow arrow-left" @click="prevPage" v-show="currentPage > 1">
         <span>‹</span>
       </div>
-      <RouterLink v-for="item in displayList" :key="item.id" class="content-item">
+      <!-- <RouterLink v-for="item in displayList" :key="item.id" class="content-item">
         <img :src="item.picture" :title="item.name">
-      </RouterLink>
+      </RouterLink> -->
+
+      <div v-for="item in displayList" :key="item.id" class="content-item">
+        <img :src="item.picture" :title="item.name">
+      </div>
       <div class="arrow arrow-right" @click="nextPage" v-show="currentPage < totalPages">
         <span>›</span>
       </div>
@@ -48,10 +52,15 @@ const nextPage = () => {
   }
 }
 
-onMounted(() => {
-  getBrandList().then(res => {
-    brandList.value = res.result
-  })
+// onMounted(() => {
+//   getBrandList().then(res => {
+//     brandList.value = res.result
+//   })
+// })
+
+onMounted(async () => {
+  const res = await getBrandList()
+  brandList.value = res.result
 })
 </script>
 
