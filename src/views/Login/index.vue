@@ -105,17 +105,16 @@ const formData = ref({
 // 登录提交
 const handleSubmit = async (formEl) => {
   // console.log(formEl.value)
-   if (!formEl) return
-   await formEl.validate( async (valid) => {
-    if (valid) {
-      await getUserInfo({
-        account: formData.value.account,
-        password: formData.value.password
-      })
-      ElMessage.success('登录成功')
-      router.replace('/')
-    }
+  if (!formEl) return
+  const valid = await formEl.validate().catch(() => false)
+  if (!valid) return
+   
+  await getUserInfo({
+     account: formData.value.account,
+     password: formData.value.password
   })
+  ElMessage.success('登录成功')
+  router.replace('/')
 }
 </script>
 

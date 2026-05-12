@@ -11,11 +11,16 @@ export const useUserStore = defineStore('user', () => {
       password
     })
     userInfo.value = res.result
+    localStorage.setItem('user', JSON.stringify(res.result))
+  }
+
+  // 清空用户信息
+  const clearUserInfo = () => {
+    userInfo.value = null
   }
   return {
     userInfo,
-    getUserInfo
+    getUserInfo,
+    clearUserInfo
   }
-}, {
-  persist: true
 })
