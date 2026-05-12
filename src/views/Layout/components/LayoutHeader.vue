@@ -22,14 +22,14 @@
         />
       </div>
       <!-- 头部购物车 -->
-      
+      <HeaderCart />
     </div>
   </header>
 </template>
 
 <script setup>
 import { Search } from '@element-plus/icons-vue'
-
+import HeaderCart from './HeaderCart.vue'
 
 import {ref, onMounted} from 'vue'
 
