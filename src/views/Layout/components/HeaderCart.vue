@@ -9,9 +9,8 @@ const cartStore = useCartStore()
     <a class="curr" href="javascript:;">
       <i class="iconfont icon-cart"></i><em>{{cartStore.cartList.length}}</em>
     </a>
-    <div class="layer">
+    <div class="layer" v-if="cartStore.cartList.length > 0">
       <div class="list">
-        
         <div class="item" v-for="i in cartStore.cartList" :key="i.skuId">
           <RouterLink to="">
             <img :src="i.picture" alt="" />
@@ -37,6 +36,9 @@ const cartStore = useCartStore()
         </div>
         <el-button size="large" type="primary" >去购物车结算</el-button>
       </div>
+    </div>
+    <div class="layer" style="text-align: center;" v-else>
+      <p>购物车为空</p>
     </div>
 </div>
 </template>
