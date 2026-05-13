@@ -64,7 +64,7 @@
 <script setup>
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
-import { useUserStore } from '@/stores/user'
+import { useUserStore } from '@/stores/userStore'
 const {getUserInfo} = useUserStore()
 import { useRouter } from 'vue-router'
 const router = useRouter()

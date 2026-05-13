@@ -33,7 +33,7 @@ import HeaderCart from './HeaderCart.vue'
 
 import {ref, onMounted} from 'vue'
 
-import {useCategoryStore} from '@/stores/category'
+import {useCategoryStore} from '@/stores/categoryStore'
 const categoryStore = useCategoryStore()
 
 const input = ref('')

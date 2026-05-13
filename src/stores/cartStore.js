@@ -1,7 +1,7 @@
 // 购物车状态管理
 import { defineStore } from 'pinia'
 import { ref,computed } from 'vue'
-import { useUserStore } from '@/stores/user'
+import { useUserStore } from '@/stores/userStore'
 import { getCartListAPI,addCartAPI, deleteCartAPI } from '@/apis/cart'
 import { ElMessage } from 'element-plus'
 

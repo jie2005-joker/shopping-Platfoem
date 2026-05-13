@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-import {useCategoryStore} from '@/stores/category'
+import {useCategoryStore} from '@/stores/categoryStore'
 import {ref} from 'vue'
 // 获取分类列表
 const categoryStore = useCategoryStore()
