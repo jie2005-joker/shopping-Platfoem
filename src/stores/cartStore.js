@@ -2,7 +2,8 @@
 import { defineStore } from 'pinia'
 import { ref,computed } from 'vue'
 import { useUserStore } from '@/stores/user'
-import { getCartListAPI,addCartAPI } from '@/apis/cart'
+import { getCartListAPI,addCartAPI, deleteCartAPI } from '@/apis/cart'
+import { ElMessage } from 'element-plus'
 
 export const useCartStore = defineStore('cart', () => {
   const userStore = useUserStore()
@@ -19,16 +20,15 @@ export const useCartStore = defineStore('cart', () => {
         skuId: goods.skuId,
         count: goods.count
       })
-      console.log(222) 
+      ElMessage.success('添加成功')
+     
       // 更新本地购物车列表
       // 从接口中获取最新的购物车列表
-      const cartListRes = await getCartListAPI()
-      // console.log(cartListRes)
-      cartList.value = cartListRes.result
+      refreshCartList()
     }else{
       // 未登录状态,添加到本地购物车中
         // 有相同商品，更新数量
-        console.log(111)
+        // console.log(111)
       const item = cartList.value.find(item => item.skuId === goods.skuId)
       if(item){
         item.count += goods.count
@@ -38,11 +38,26 @@ export const useCartStore = defineStore('cart', () => {
       }
     }}
 
-    // 删除购物车商品
-    const delGoods = (skuId) => {
-      cartList.value = cartList.value.filter(item => item.skuId !== skuId)
+    // 删除购物车商品,如果是登录状态,则删除接口中的商品;否则删除本地购物车中的商品.
+    const delGoods = async (id) => {
+      if(isLogin.value){
+        // 登录状态,删除接口中的商品
+        const res = await deleteCartAPI([id])
+        // console.log(res)
+        ElMessage.success('删除成功')
+        // 更新本地购物车列表
+        refreshCartList()
+      }else{
+        // 未登录状态,删除本地购物车中的商品
+        cartList.value = cartList.value.filter(item => item.skuId !== id)
+      }
     }
 
+    // 刷新购物车列表
+    const refreshCartList = async () => {
+      const cartListRes = await getCartListAPI()
+      cartList.value = cartListRes.result
+    }
     // 计算商品总数量
     const totalCount = computed(() => {
       return cartList.value.reduce((pre, cur) => pre + cur.count, 0)

@@ -16,3 +16,14 @@ export const getCartListAPI = () => {
     method: 'GET'
   })
 }
+
+// 删除购物车中商品
+export const deleteCartAPI = (id) => {
+  return request({
+    url: '/member/cart',
+    method: 'DELETE',
+    data: {
+      id
+    }
+  })
+}
