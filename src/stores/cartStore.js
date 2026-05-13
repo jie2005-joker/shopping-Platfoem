@@ -53,6 +53,11 @@ export const useCartStore = defineStore('cart', () => {
       }
     }
 
+    // 清空购物车
+    const clearCart = () => {
+      cartList.value = []
+    }
+
     // 刷新购物车列表
     const refreshCartList = async () => {
       const cartListRes = await getCartListAPI()
@@ -118,7 +123,8 @@ export const useCartStore = defineStore('cart', () => {
     selectAll,
     selectAllGoods,
     isAllSelected,
-    singleSelect
+    singleSelect,
+    clearCart
   }
 },{
   persist: true
