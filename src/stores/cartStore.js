@@ -1,35 +1,52 @@
 // 购物车状态管理
 import { defineStore } from 'pinia'
 import { ref,computed } from 'vue'
+import { useUserStore } from '@/stores/user'
+import { getCartListAPI,addCartAPI } from '@/apis/cart'
 
 export const useCartStore = defineStore('cart', () => {
+  const userStore = useUserStore()
+  const isLogin = computed(() => userStore.userInfo.token)
+
   const cartList = ref([])
-  const addCart = (goods) => {
-  //  console.log("添加购物车",goods)
-  // 检查购物车中是否有相同商品
-  
-    // 有相同商品，更新数量
-    const item = cartList.value.find(item => item.skuId === goods.skuId)
-    if(item){
-      item.count += goods.count
+  const addCart = async (goods) => {
+    // console.log(isLogin)
+    //  console.log("添加购物车",goods)
+    // 判断用户是否处于登录状态,如果是,则将购物车商品添加到接口中;否则添加到本地购物车中.
+    if(isLogin.value){
+      // 登录状态,添加到接口中
+      const res = await addCartAPI({
+        skuId: goods.skuId,
+        count: goods.count
+      })
+      console.log(222) 
+      // 更新本地购物车列表
+      // 从接口中获取最新的购物车列表
+      const cartListRes = await getCartListAPI()
+      // console.log(cartListRes)
+      cartList.value = cartListRes.result
     }else{
-      // 无相同商品，添加到购物车
-      cartList.value.push(goods)
+      // 未登录状态,添加到本地购物车中
+        // 有相同商品，更新数量
+        console.log(111)
+      const item = cartList.value.find(item => item.skuId === goods.skuId)
+      if(item){
+        item.count += goods.count
+      }else{
+        // 无相同商品，添加到购物车
+        cartList.value.push(goods)
+      }
+    }}
+
+    // 删除购物车商品
+    const delGoods = (skuId) => {
+      cartList.value = cartList.value.filter(item => item.skuId !== skuId)
     }
-    // console.log(cartList.value)
-    // 保存到本地存储
-    // localStorage.setItem('cartList', JSON.stringify(cartList.value))
-  }
 
-  // 删除购物车商品
-  const delGoods = (skuId) => {
-    cartList.value = cartList.value.filter(item => item.skuId !== skuId)
-  }
-
-  // 计算商品总数量
-  const totalCount = computed(() => {
-    return cartList.value.reduce((pre, cur) => pre + cur.count, 0)
-  })
+    // 计算商品总数量
+    const totalCount = computed(() => {
+      return cartList.value.reduce((pre, cur) => pre + cur.count, 0)
+    })
 
   // 计算商品总金额
   const totalPrice = computed(() => {

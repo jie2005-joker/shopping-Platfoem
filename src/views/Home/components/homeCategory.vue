@@ -17,7 +17,7 @@
         <span class="sub-title">根据您的购买或浏览记录推荐</span>
       </div>
       <div class="content">
-          <RouterLink v-for="good in currentCategory.goods" :key="good.id" to="/" class="content-item">
+          <RouterLink v-for="good in currentCategory.goods" :key="good.id" :to="`/details/${good.id}`" class="content-item">
             <img :src="good.picture" alt="">
             <div class="info">
               <div class="title">{{good.name}}</div>
