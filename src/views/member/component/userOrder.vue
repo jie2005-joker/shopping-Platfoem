@@ -12,29 +12,37 @@ const tabTypes = [
   { name: "cancel", label: "已取消" }
 ]
 // 订单列表
+const params = ref({
+  orderState: 0,
+  page: 1,
+  pageSize: 2
+})
 const orderList = ref({})
 const getOrderList = async () => {
-  const res = await getUserOrder({
-    orderState: 0,
-    page: 1,
-    pageSize: 2
-  })
+  const res = await getUserOrder(params.value)
   orderList.value = res.result
   // console.log(res)
 }
 onMounted(() => {
   getOrderList()
 })
+
+// tab切换
+const handleTabChange = (type) => {
+  // console.log(type)
+  params.value.orderState = type
+  getOrderList()
+}
 </script>
 
 <template>
   <div class="order-container">
-    <el-tabs>
+    <el-tabs @tab-change="handleTabChange">
       <!-- tab切换 -->
       <el-tab-pane v-for="item in tabTypes" :key="item.name" :label="item.label" />
 
       <div class="main-container">
-        <div class="holder-container" v-if="orderList.length === 0">
+        <div class="holder-container" v-if="orderList.items?.length === 0">
           <el-empty description="暂无订单数据" />
         </div>
         <div v-else>
