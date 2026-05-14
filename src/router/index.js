@@ -42,6 +42,7 @@ const router = createRouter({
       },
       {
         path: 'member',
+        redirect: '/member/user',
         component: () => import('@/views/member/index.vue'),
         children: [
           {
