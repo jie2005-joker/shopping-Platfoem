@@ -2,6 +2,9 @@
 import {useCartStore} from '@/stores/cartStore'
 const cartStore = useCartStore()
 import { ElMessageBox } from 'element-plus'
+import {useRouter} from 'vue-router'
+const router = useRouter()
+
 const delGood = (skuId) => {
   ElMessageBox.confirm('确认删除吗?', '提示', {
     confirmButtonText: '确定',
@@ -20,6 +23,7 @@ const singleChange = (i,selected) => {
 const completeSelect = () => {
   cartStore.selectAllGoods()
 }
+
 </script>
 
 <template>
@@ -95,7 +99,10 @@ const completeSelect = () => {
           <span class="red">¥ {{cartStore.selectedPrice.toFixed(2) }} </span>
         </div>
         <div class="total">
-          <el-button size="large" type="primary">下单结算</el-button>
+          <!--  -->
+          <router-link to="/checkout">
+            <el-button size="large" type="primary">下单结算</el-button>
+          </router-link>
         </div>
       </div>
     </div>
