@@ -36,3 +36,20 @@ export const mergeCartAPI = (data) => {
     data
   })
 }
+
+// 新增收货地址信息
+export const addAddressAPI = (data) => {
+  return request({
+    url: '/member/address',
+    method: 'POST',
+    data
+  })
+}
+
+// 删除收货地址
+export const deleteAddressAPI = (id) => {
+  return request({
+    url: `/member/address/${id}`,
+    method: 'DELETE'
+  })
+}
