@@ -10,6 +10,7 @@ export const useCartStore = defineStore('cart', () => {
   const isLogin = computed(() => userStore.userInfo.token)
 
   const cartList = ref([])
+  // 新增购物车商品
   const addCart = async (goods) => {
     // console.log(isLogin)
     //  console.log("添加购物车",goods)
@@ -39,10 +40,11 @@ export const useCartStore = defineStore('cart', () => {
     }}
 
     // 删除购物车商品,如果是登录状态,则删除接口中的商品;否则删除本地购物车中的商品.
-    const delGoods = async (id) => {
+    const delGoods = async (ids) => {
       if(isLogin.value){
         // 登录状态,删除接口中的商品
-        const res = await deleteCartAPI([id])
+        const res = await deleteCartAPI([ids])
+        console.log("删除接口中的商品",res)
         // console.log(res)
         ElMessage.success('删除成功')
         // 更新本地购物车列表
@@ -124,7 +126,8 @@ export const useCartStore = defineStore('cart', () => {
     selectAllGoods,
     isAllSelected,
     singleSelect,
-    clearCart
+    clearCart,
+    refreshCartList
   }
 },{
   persist: true

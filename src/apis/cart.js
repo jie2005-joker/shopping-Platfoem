@@ -18,12 +18,21 @@ export const getCartListAPI = () => {
 }
 
 // 删除购物车中商品
-export const deleteCartAPI = (id) => {
+export const deleteCartAPI = (ids) => {
   return request({
     url: '/member/cart',
     method: 'DELETE',
     data: {
-      id
+      ids
     }
+  })
+}
+
+// 合并购物车商品
+export const mergeCartAPI = (data) => {
+  return request({
+    url: '/member/cart/merge',
+    method: 'POST',
+    data
   })
 }

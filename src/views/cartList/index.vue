@@ -9,8 +9,6 @@ const delGood = (skuId) => {
     type: 'warning'
   }).then(() => {
     cartStore.delGoods(skuId)
-  }).catch(() => {
-    // 取消删除
   })
 }
 // 单选商品
@@ -28,62 +26,67 @@ const completeSelect = () => {
   <div class="xtx-cart-page">
     <div class="container m-top-20">
       <div class="cart">
-        <table>
-          <thead>
-            <tr>
-              <th width="120">
-                <el-checkbox :model-value="cartStore.selectAll" @change="completeSelect" />
-              </th>
-              <th width="400">商品信息</th>
-              <th width="220">单价</th>
-              <th width="180">数量</th>
-              <th width="180">小计</th>
-              <th width="140">操作</th>
-            </tr>
-          </thead>
-          <!-- 商品列表 -->
-          <tbody>
-            <tr v-for="i in cartStore.cartList" :key="i.skuId">
-              <td>
-                <el-checkbox :model-value="i.selected" @change="(selected) => singleChange(i,selected)"/>
-              </td>
-              <td>
-                <div class="goods">
-                  <RouterLink to="/"><img :src="i.picture" alt="" /></RouterLink>
-                  <div>
-                    <p class="name ellipsis">
-                      {{ i.name }}
-                    </p>
-                  </div>
-                </div>
-              </td>
-              <td class="tc">
-                <p>&yen;{{ i.price }}</p>
-              </td>
-              <td class="tc">
-                <el-input-number :min="1" v-model="i.count" />
-              </td>
-              <td class="tc">
-                <p class="f16 red">&yen;{{ (i.price * i.count).toFixed(2) }}</p>
-              </td>
-              <td class="tc">
-                <p>
-                  <a href="javascript:;" @click="delGood(i.skuId)">删除</a>
-                </p>
-              </td>
-            </tr>
-            <tr v-if="cartStore.cartList.length === 0">
-              <td colspan="6">
-                <div class="cart-none">
-                  <el-empty description="购物车列表为空">
-                    <el-button type="primary">随便逛逛</el-button>
-                  </el-empty>
-                </div>
-              </td>
-            </tr>
-          </tbody>
+        <el-table :data="cartStore.cartList" empty-text=" ">
+  <!-- 全选复选框 -->
+  <el-table-column width="120">
+    <template #header>
+      <el-checkbox :model-value="cartStore.selectAll" @change="completeSelect" />
+    </template>
+    <template #default="{ row }">
+      <el-checkbox :model-value="row.selected" @change="(selected) => singleChange(row, selected)" />
+    </template>
+  </el-table-column>
 
-        </table>
+  <!-- 商品信息 -->
+  <el-table-column label="商品信息" width="400" align="center">
+    <template #default="{ row }">
+      <div class="goods">
+        <RouterLink to="/"><img :src="row.picture" alt="" /></RouterLink>
+        <div>
+          <p class="name ellipsis">{{ row.name }}</p>
+        </div>
+      </div>
+    </template>
+  </el-table-column>
+
+  <!-- 单价 -->
+  <el-table-column label="单价" width="150">
+    <template #default="{ row }">
+      <p>¥{{ row.price }}</p>
+    </template>
+  </el-table-column>
+
+  <!-- 数量 -->
+  <el-table-column label="数量" width="200" align="center">
+    <template #default="{ row }">
+      <el-input-number :min="1" v-model="row.count" />
+    </template>
+  </el-table-column>
+
+  <!-- 小计 -->
+  <el-table-column label="小计" width="180" align="center">
+    <template #default="{ row }">
+      <p class="f16 red">¥{{ (row.price * row.count).toFixed(2) }}</p>
+    </template>
+  </el-table-column>
+
+  <!-- 操作 -->
+  <el-table-column label="操作" width="140">
+    <template #default="{ row }">
+      <!-- <a href="javascript:;" @click="delGood(row.skuId)">删除</a> -->
+      <el-button type="danger" text @click="delGood(row.skuId)">删除</el-button>
+    </template>
+  </el-table-column>
+
+  <!-- 空状态 -->
+  <template #empty>
+    <div class="cart-none">
+      <el-empty description="购物车列表为空">
+        <el-button type="primary">随便逛逛</el-button>
+      </el-empty>
+    </div>
+  </template>
+</el-table>
       </div>
       <!-- 操作栏 -->
       <div class="action">

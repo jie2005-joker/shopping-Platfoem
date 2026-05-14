@@ -1,7 +1,7 @@
 <template>
   <footer class="app_footer">
     <!-- 联系我们 -->
-    <div class="contact" style="height: 1000px;">
+    <div class="contact">
       <div class="container">
         <dl>
           <dt>客户服务</dt>
