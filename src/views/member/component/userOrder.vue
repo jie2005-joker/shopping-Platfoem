@@ -18,9 +18,11 @@ const params = ref({
   pageSize: 2
 })
 const orderList = ref({})
+const total = ref(0)
 const getOrderList = async () => {
   const res = await getUserOrder(params.value)
   orderList.value = res.result
+  total.value = res.result.counts
   // console.log(res)
 }
 onMounted(() => {
@@ -33,6 +35,30 @@ const handleTabChange = (type) => {
   params.value.orderState = type
   getOrderList()
 }
+
+// 分页切换
+const timer = null
+const handlePageChange = (page) => {
+  // 防抖处理
+  clearTimeout(timer)
+  timer = setTimeout(() => {
+    params.value.page = page
+    getOrderList()
+  }, 1000)
+}
+
+// 状态码转换
+const fomartPayState = (payState) => {
+    const stateMap = {
+      1: '待付款',
+      2: '待发货',
+      3: '待收货',
+      4: '待评价',
+      5: '已完成',
+      6: '已取消'
+    }
+    return stateMap[payState]
+  }
 </script>
 
 <template>
@@ -78,7 +104,7 @@ const handleTabChange = (type) => {
                 </ul>
               </div>
               <div class="column state">
-                <p>{{ order.orderState }}</p>
+                <p>{{ fomartPayState(order.orderState) }}</p>
                 <p v-if="order.orderState === 3">
                   <a href="javascript:;" class="green">查看物流</a>
                 </p>
@@ -115,7 +141,12 @@ const handleTabChange = (type) => {
           </div>
           <!-- 分页 -->
           <div class="pagination-container">
-            <el-pagination background layout="prev, pager, next" />
+            <el-pagination 
+              background 
+              layout="prev, pager, next" 
+              :total="total" 
+              :page-size="params.pageSize" 
+              @change="handlePageChange" />
           </div>
         </div>
       </div>
