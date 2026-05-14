@@ -1,4 +1,6 @@
 <script setup>
+import { getUserOrder } from '@/apis/user'
+import { onMounted, ref } from 'vue'
 // tab列表
 const tabTypes = [
   { name: "all", label: "全部订单" },
@@ -10,8 +12,19 @@ const tabTypes = [
   { name: "cancel", label: "已取消" }
 ]
 // 订单列表
-const orderList = []
-
+const orderList = ref({})
+const getOrderList = async () => {
+  const res = await getUserOrder({
+    orderState: 0,
+    page: 1,
+    pageSize: 2
+  })
+  orderList.value = res.result
+  // console.log(res)
+}
+onMounted(() => {
+  getOrderList()
+})
 </script>
 
 <template>
@@ -26,7 +39,7 @@ const orderList = []
         </div>
         <div v-else>
           <!-- 订单列表 -->
-          <div class="order-item" v-for="order in orderList" :key="order.id">
+          <div class="order-item" v-for="order in orderList.items" :key="order.id">
             <div class="head">
               <span>下单时间：{{ order.createTime }}</span>
               <span>订单编号：{{ order.id }}</span>
