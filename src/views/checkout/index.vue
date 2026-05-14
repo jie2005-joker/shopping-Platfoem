@@ -1,7 +1,11 @@
 <script setup>
-import { generateOrderAPI } from '@/apis/checkout'
+import { generateOrderAPI, submitOrderAPI } from '@/apis/checkout'
 import { onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import {useRouter} from 'vue-router'
+import {useCartStore} from '@/stores/cartStore'
+const cartStore = useCartStore()
+const router = useRouter()
 const checkInfo = ref({})  // 订单对象
 const curAddress = ref({})  // 地址对象
 const activeAddress = ref({})
@@ -38,6 +42,31 @@ const confirmAddress = () => {
 const cancelAddress = () => {
   dialogVisible.value = false
   activeAddress.value = {}
+}
+
+// 提交订单
+const submitOrder = async () => {
+  const res = await submitOrderAPI({
+    deliveryTimeType: 1,
+    payType: 1,
+    payChannel: 1,
+    buyerMessage: "",
+    goods: checkInfo.value.goods.map(item => ({
+      skuId: item.skuId,
+      count: item.count
+    })),
+    addressId: curAddress.value.id
+  })
+  const id = res.result.id
+  ElMessage.success('订单提交成功')
+  // 跳转支付页
+  router.push({
+    path: '/pay',
+    query: {
+      id
+    }
+  })
+  cartStore.refreshCartList()
 }
 </script>
 
@@ -143,7 +172,7 @@ const cancelAddress = () => {
         </div>
         <!-- 提交订单 -->
         <div class="submit">
-          <el-button type="primary" size="large" >提交订单</el-button>
+          <el-button type="primary" size="large" @click="submitOrder">提交订单</el-button>
         </div>
       </div>
     </div>
