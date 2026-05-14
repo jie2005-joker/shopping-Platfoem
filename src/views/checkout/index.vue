@@ -1,9 +1,10 @@
 <script setup>
 import { generateOrderAPI } from '@/apis/checkout'
 import { onMounted, ref } from 'vue'
+import { ElMessage } from 'element-plus'
 const checkInfo = ref({})  // 订单对象
 const curAddress = ref({})  // 地址对象
-
+const activeAddress = ref({})
 // 获取订单信息
 const getOrderInfo = async () => {
   const res = await generateOrderAPI()
@@ -15,6 +16,29 @@ const getOrderInfo = async () => {
 onMounted(() => {
   getOrderInfo()
 })
+
+// 控制切换地址弹窗显示
+const dialogVisible = ref(false)
+
+// 切换地址
+const handleChangeAddress = (item) => {
+  activeAddress.value = item
+}
+
+// 确认切换地址
+const confirmAddress = () => {
+  curAddress.value = activeAddress.value
+
+  dialogVisible.value = false
+
+  ElMessage.success('切换地址成功')
+}
+
+// 取消切换地址
+const cancelAddress = () => {
+  dialogVisible.value = false
+  activeAddress.value = {}
+}
 </script>
 
 <template>
@@ -34,7 +58,7 @@ onMounted(() => {
               </ul>
             </div>
             <div class="action">
-              <el-button size="large" @click="toggleFlag = true">切换地址</el-button>
+              <el-button size="large" @click="dialogVisible = true">切换地址</el-button>
               <el-button size="large" @click="addFlag = true">添加地址</el-button>
             </div>
           </div>
@@ -42,34 +66,6 @@ onMounted(() => {
         <!-- 商品信息 -->
         <h3 class="box-title">商品信息</h3>
         <div class="box-body">
-          <!-- <table class="goods">
-            <thead>
-              <tr>
-                <th width="520">商品信息</th>
-                <th width="170">单价</th>
-                <th width="170">数量</th>
-                <th width="170">小计</th>
-                <th width="170">实付</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="i in checkInfo.goods" :key="i.id">
-                <td>
-                  <a href="javascript:;" class="info">
-                    <img :src="i.picture" alt="">
-                    <div class="right">
-                      <p>{{ i.name }}</p>
-                      <p>{{ i.attrsText }}</p>
-                    </div>
-                  </a>
-                </td>
-                <td>&yen;{{ i.price }}</td>
-                <td>{{ i.count }}</td>
-                <td>&yen;{{ i.totalPrice }}</td>
-                <td>&yen;{{ i.totalPayPrice }}</td>
-              </tr>
-            </tbody>
-          </table> -->
           <el-table :data="checkInfo.goods" class="goods" border> 
             <!-- 商品信息 -->
             <el-table-column label="商品信息" width="520">
@@ -153,6 +149,29 @@ onMounted(() => {
     </div>
   </div>
   <!-- 切换地址 -->
+<el-dialog title="切换收货地址" width="30%" center v-model="dialogVisible">
+  <div class="addressWrapper">
+    <div 
+      class="text item" 
+      v-for="item in checkInfo.userAddresses"  
+      :key="item.id" 
+      :class="{'active': activeAddress.id === item.id}" 
+      @click="handleChangeAddress(item)">
+      <ul>
+      <li><span>收<i />货<i />人：</span>{{ item.receiver }} </li>
+      <li><span>联系方式：</span>{{ item.contact }}</li>
+      <li><span>收货地址：</span>{{ item.fullLocation + item.address }}</li>
+      </ul>
+    </div>
+  </div>
+  <template #footer>
+    <span class="dialog-footer">
+      <el-button @click="cancelAddress">取消</el-button>
+      <el-button type="primary" @click="confirmAddress">确定</el-button>
+    </span>
+  </template>
+</el-dialog>
+
   <!-- 添加地址 -->
 </template>
 
