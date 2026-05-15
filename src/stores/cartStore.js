@@ -51,7 +51,7 @@ export const useCartStore = defineStore('cart', () => {
         refreshCartList()
       }else{
         // 未登录状态,删除本地购物车中的商品
-        cartList.value = cartList.value.filter(item => item.skuId !== id)
+        cartList.value = cartList.value.filter(item => item.skuId !== ids)
       }
     }
 
