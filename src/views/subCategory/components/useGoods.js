@@ -22,30 +22,44 @@ export function useGoods() {
 
   // 控制何时禁止加载更多
   const disabled = ref(false)
-
+  const loading = ref(false)
   // 加载更多
 const loadMore = async () => {
-  // console.log(pages.value)
+    if (disabled.value || loading.value) return
 
-  if(data.value.page > pages.value){
-    // 没有更多了
-    disabled.value = true
-    return
+    loading.value = true
+    try {
+      const res = await getSubCategoryGoodsAPI(data.value)
+      goodsList.value = [...goodsList.value, ...res.result.items]
+      pages.value = res.result.pages
+
+      if (data.value.page >= pages.value) {
+        disabled.value = true
+      } else {
+        data.value.page++
+      }
+    } finally {
+      loading.value = false
+    }
   }
-  const res = await getSubCategoryGoodsAPI(data.value)
-  // console.log(res)
-  goodsList.value = [...goodsList.value, ...res.result.items]
-    data.value.page++
-  // console.log(goodsList)
-}
+   const initLoad = async () => {
+    await loadMore('bottom')
+    // 内容不足时继续加载
+    while (!disabled.value && goodsList.value.length < 20) {
+      await loadMore('bottom')
+    }
+  }
   onMounted(() => {
     getGoods()
+    initLoad()
   })
   return {
     goodsList,
     getGoods,
     disabled,
     loadMore,
-    data
+    data,
+    initLoad,
+    loading
   }
 }

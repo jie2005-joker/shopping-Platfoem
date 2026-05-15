@@ -18,16 +18,13 @@
         <el-tab-pane label="最高人气" name="orderNum">最高人气</el-tab-pane>
         <el-tab-pane label="评论最多" name="evaluateNum">评论最多</el-tab-pane>
       </el-tabs>
-      <!-- <div v-infinite-scroll="loadMore" :infinite-scroll-disabled="disabled" class="body">
-        <goodsItem v-for="item in goodsList" :key="item.id" :goods="item"/>
-      </div> -->
-
-      <!-- 需要给 el-scrollbar 一个固定高度，否则滚动条不会出现 -->
-      <el-scrollbar height="800px" @end-reached="loadMore">
-        <div class="body">
-          <goodsItem v-for="item in goodsList" :key="item.id" :goods="item"/>
-        </div>
-      </el-scrollbar>
+       <el-scrollbar ref="scrollbarRef" height="1200px" @scroll="handleScroll">
+    <div class="body">
+      <goodsItem v-for="item in goodsList" :key="item.id" :goods="item"/>
+      <div v-if="loading" class="load-tip">加载中...</div>
+      <div v-else-if="disabled && goodsList.length > 0" class="load-tip">没有更多了</div>
+    </div>
+  </el-scrollbar>
     </div>
     
   </div>
@@ -38,9 +35,10 @@ import {useSubCategory} from '@/views/subCategory/components/index.js'
 import {useGoods} from '@/views/subCategory/components/useGoods.js'
 import goodsItem from '@/views/Home/components/goodsItem.vue'
 import { ref } from 'vue'
+import InfiniteList from 'vue3-infinite-list'
 
 const {subCategoryList} = useSubCategory()
-const {goodsList, getGoods, data, disabled, loadMore} = useGoods()
+const {goodsList, getGoods, data, disabled, loadMore, loading} = useGoods()
 
 
 const handleTabChange = () => {
@@ -48,24 +46,21 @@ const handleTabChange = () => {
   data.value.page = 1
   getGoods()
 }
-
- const scrollbarRef = ref(null)
+ const scrollbarRef = ref()
 
   const handleScroll = ({ scrollTop }) => {
     const scrollbar = scrollbarRef.value
     if (!scrollbar) return
 
-    // 通过 wrap$ 获取实际滚动容器
-    const wrap = scrollbar.wrap$
+    const wrap = scrollbar.wrapRef
     if (!wrap) return
 
-    const scrollHeight = wrap.scrollHeight
-    const clientHeight = wrap.clientHeight
+    const { scrollHeight, clientHeight } = wrap
+    const distance = scrollHeight - scrollTop - clientHeight
 
-    console.log(scrollTop, scrollHeight, clientHeight)
+    console.log('距离底部:', distance)
 
-    if (disabled.value) return
-    if (scrollTop + clientHeight >= scrollHeight - 10) {
+    if (distance < 50) {
       loadMore()
     }
   }
@@ -85,6 +80,11 @@ const handleTabChange = () => {
     display: flex;
     flex-wrap: wrap;
     padding: 0 10px;
+    .load-tip {
+  text-align: center;
+  padding: 10px;
+  color: #999;
+}
   }
 
   .goods-item {
