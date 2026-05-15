@@ -101,9 +101,9 @@
           <!-- 24热榜+专题推荐 -->
           <div class="goods-aside">
             <!-- 24小时热榜 -->
-            <DetailHot :type="1" />
+            <DetailHot :type="1" @changeGood="getGoods"/>
             <!-- 周热榜 -->
-            <DetailHot :type="2" />
+            <DetailHot :type="2" @changeGood="getGoods"/>
           </div>
         </div>
       </div>
@@ -158,6 +158,15 @@ const addCartGoods = () => {
     })
     ElMessage.success('加入购物车成功')
   }
+}
+
+const getGoods = (id) => {
+  getGoodsDetailAPI(id).then(res => {
+    // console.log(res)
+    goods.value = res.result
+    // 图片列表赋值
+    imgList.value = res.result.mainPictures || []
+  })
 }
 </script>
 

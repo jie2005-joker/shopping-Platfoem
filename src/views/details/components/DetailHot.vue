@@ -1,8 +1,7 @@
 <script setup>
 import { fetchHotGoodsAPI } from '@/apis/detail'
-import { onMounted,ref, computed } from 'vue'
+import { onMounted,ref, computed} from 'vue'
 import {useRoute} from 'vue-router'
-
 const props = defineProps({
   type: {
     type: Number,
@@ -15,14 +14,19 @@ const typemap = {
 }
 const title = computed(() => typemap[props.type])
 const route = useRoute()
-
+// const router = useRouter()
 const hotGoods = ref([])
+
 onMounted(() => {
-  fetchHotGoodsAPI({ id: route.params.id, type: 2 }).then(res => {
+  fetchHotGoodsAPI({ id: route.params.id, type: props.type }).then(res => {
     hotGoods.value = res.result
-    // console.log(hotGoods.value)
   })
 })
+
+const emit = defineEmits(['changeGood'])
+const handleClick = (id) => {
+  emit('changeGood', id)
+}
 </script>
 
 
@@ -30,7 +34,7 @@ onMounted(() => {
   <div class="goods-hot">
     <h3>{{ title }}</h3>
     <!-- 商品区块 -->
-    <RouterLink :to="`/details/${item.id}`" class="goods-item" v-for="item in hotGoods" :key="item.id">
+    <RouterLink :to="`/details/${item.id}`" class="goods-item" v-for="item in hotGoods" :key="item.id" @click="handleClick(item.id)">
       <img :src="item.picture" alt="" />
       <p class="name ellipsis">{{item.name}}</p>
       <p class="desc ellipsis">{{item.desc}}</p>
